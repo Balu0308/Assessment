@@ -20,13 +20,13 @@ BARCODE: 4,025 missing values.
 TRANSACTION_TAKEHOME.csv: 171 duplicates.
 USER_TAKEHOME.csv: 0 duplicates.
 PRODUCTS_TAKEHOME.csv: 215 duplicates.
-Inconsistent Data Types:
-3.In Transaction Data:
+3.Inconsistent Data Types:
+In Transaction Data:
 BARCODE is stored as a float, but it should likely be a string to avoid scientific notation issues.
 FINAL_QUANTITY contains inconsistent values (e.g., "zero" instead of numeric values).
 In Product Data:
 BARCODE is also a float, which could lead to truncation issues.
-
+CODE FOR ABOVE QUESTION 1:
 # Import the necessary library
 import pandas as pd
 
@@ -46,7 +46,8 @@ products_df = pd.read_csv("/mnt/data/PRODUCTS_TAKEHOME (1).csv")
 # This helps to understand the structure of the data and detect any potential issues, such as missing values or incorrect formatting.
 transaction_df.head(), user_df.head(), products_df.head()
 
-2.Fields That Are Challenging to Understand:
+2.Are there any fields that are challenging to understand?
+Fields That Are Challenging to Understand:
 FINAL_QUANTITY (Transaction Data)
 Contains "zero" as a text value instead of numeric 0.00. This may cause issues in calculations.
 CATEGORY_3 and CATEGORY_4 (Product Data)
@@ -63,3 +64,22 @@ MANUFACTURER and BRAND (Product Data)
 Many missing values and placeholder text like "PLACEHOLDER MANUFACTURER", making it hard to trust the data.
 LANGUAGE (User Data)
 Contains some non-standard values like es-419 which may need clarification on whether it represents a specific Spanish locale.
+
+CODE FOR AVOVE QUESTION 2:
+
+# Check for missing values in each dataset
+missing_values_transaction = transaction_df.isnull().sum()
+missing_values_user = user_df.isnull().sum()
+missing_values_products = products_df.isnull().sum()
+
+# Check for duplicate entries
+duplicates_transaction = transaction_df.duplicated().sum()
+duplicates_user = user_df.duplicated().sum()
+duplicates_products = products_df.duplicated().sum()
+
+# Display data types for better understanding
+data_types_transaction = transaction_df.dtypes
+data_types_user = user_df.dtypes
+data_types_products = products_df.dtypes
+
+missing_values_transaction, missing_values_user, missing_values_products, duplicates_transaction, duplicates_user, duplicates_products, data_types_transaction, data_types_user, data_types_products
