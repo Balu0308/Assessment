@@ -1,1 +1,39 @@
+1..Are there any data quality issues present?
+Data Quality Issues Identified:
+1.Missing Values:
+Transaction Data:
+BARCODE: 5,762 missing values.
+User Data:
+BIRTH_DATE: 3,675 missing values.
+STATE: 4,812 missing values.
+LANGUAGE: 30,508 missing values.
+GENDER: 5,892 missing values.
+Product Data:
+CATEGORY_1: 111 missing values.
+CATEGORY_2: 1,424 missing values.
+CATEGORY_3: 60,566 missing values.
+CATEGORY_4: 778,093 missing values (almost all missing).
+MANUFACTURER: 226,474 missing values.
+BRAND: 226,472 missing values.
+BARCODE: 4,025 missing values.
+2.Duplicate Entries:
+TRANSACTION_TAKEHOME.csv: 171 duplicates.
+USER_TAKEHOME.csv: 0 duplicates.
+PRODUCTS_TAKEHOME.csv: 215 duplicates.
+Inconsistent Data Types:
+3.In Transaction Data:
+BARCODE is stored as a float, but it should likely be a string to avoid scientific notation issues.
+FINAL_QUANTITY contains inconsistent values (e.g., "zero" instead of numeric values).
+In Product Data:
+BARCODE is also a float, which could lead to truncation issues.
+##
+import pandas as pd
 
+# Load the files
+transaction_df = pd.read_csv("/mnt/data/TRANSACTION_TAKEHOME.csv")
+user_df = pd.read_csv("/mnt/data/USER_TAKEHOME.csv")
+products_df = pd.read_csv("/mnt/data/PRODUCTS_TAKEHOME (1).csv")
+
+# Display the first few rows of each file to understand the structure and detect any potential issues
+transaction_df.head(), user_df.head(), products_df.head()
+##
