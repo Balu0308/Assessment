@@ -26,14 +26,40 @@ BARCODE is stored as a float, but it should likely be a string to avoid scientif
 FINAL_QUANTITY contains inconsistent values (e.g., "zero" instead of numeric values).
 In Product Data:
 BARCODE is also a float, which could lead to truncation issues.
-##
+
+# Import the necessary library
 import pandas as pd
 
-# Load the files
+# Load the transaction data file into a pandas DataFrame
+# This file contains details about transactions, including receipt ID, purchase date, user ID, barcode, and final sale information.
 transaction_df = pd.read_csv("/mnt/data/TRANSACTION_TAKEHOME.csv")
+
+# Load the user data file into a pandas DataFrame
+# This file contains user-related information such as user ID, birth date, state, language, and gender.
 user_df = pd.read_csv("/mnt/data/USER_TAKEHOME.csv")
+
+# Load the products data file into a pandas DataFrame
+# This file includes product details such as category, manufacturer, brand, and barcode information.
 products_df = pd.read_csv("/mnt/data/PRODUCTS_TAKEHOME (1).csv")
 
-# Display the first few rows of each file to understand the structure and detect any potential issues
+# Display the first few rows of each DataFrame
+# This helps to understand the structure of the data and detect any potential issues, such as missing values or incorrect formatting.
 transaction_df.head(), user_df.head(), products_df.head()
-##
+
+2.Fields That Are Challenging to Understand:
+FINAL_QUANTITY (Transaction Data)
+Contains "zero" as a text value instead of numeric 0.00. This may cause issues in calculations.
+CATEGORY_3 and CATEGORY_4 (Product Data)
+High number of missing values, making it difficult to derive meaningful insights.
+MANUFACTURER and BRAND (Product Data)
+Many missing values and placeholder text like "PLACEHOLDER MANUFACTURER", making it hard to trust the data.
+LANGUAGE (User Data)
+Contains some non-standard values like es-419 which may need clarification on whether it represents a specific Spanish locale.:
+FINAL_QUANTITY (Transaction Data)
+Contains "zero" as a text value instead of numeric 0.00. This may cause issues in calculations.
+CATEGORY_3 and CATEGORY_4 (Product Data)
+High number of missing values, making it difficult to derive meaningful insights.
+MANUFACTURER and BRAND (Product Data)
+Many missing values and placeholder text like "PLACEHOLDER MANUFACTURER", making it hard to trust the data.
+LANGUAGE (User Data)
+Contains some non-standard values like es-419 which may need clarification on whether it represents a specific Spanish locale.
