@@ -1,0 +1,35 @@
+Construct an email or slack message that is understandable to a product or business leader who is not familiar with your day-to-day work. Summarize the results of your investigation. Include:
+Key data quality issues and outstanding questions about the data
+One interesting trend in the data
+Use a finding from part 2 or come up with a new insight
+Request for action: explain what additional help, info, etc. you need to make sense of the data and resolve any outstanding issues
+
+
+Email:
+Subject: Data Quality Issues & Key Insights from Transaction Analysis
+
+Hi Kayla Donnell,
+
+I’ve been analyzing our transaction, user, and product data to identify key trends and assess data quality. Here are my findings:
+
+Data Quality Issues:
+Missing Data – Significant gaps in key fields:
+User Data: 30,508 missing language values, 5,892 missing gender values, and 3,675 missing birth dates.
+Product Data: Over 226,000 missing manufacturer and brand entries, making it difficult to track product-level insights.
+Transaction Data: 5,762 missing barcodes, impacting our ability to map sales to specific products.
+Data Inconsistencies – Some fields have unexpected values, like "zero" appearing as text in FINAL_QUANTITY, which may cause reporting errors.
+Key Trend Identified:
+One standout insight: Coca-Cola is the top-performing brand by both number of transactions and total sales, across different user segments.
+
+It ranks as the most frequently purchased brand among users 21+ and those with accounts older than six months.
+This suggests strong brand loyalty and consistent purchase behavior, possibly indicating an opportunity for targeted promotions or partnerships.
+Outstanding Questions & Next Steps:
+To refine our insights, I need help addressing the following:
+
+Can we confirm the accuracy of missing barcode data? If a significant portion of transactions lack barcodes, it may skew our brand-level analysis.
+Are there any expected data constraints for product details (brand, manufacturer)? If this data isn’t systematically captured, we may need alternative ways to categorize sales trends.
+Should we clean and standardize FINAL_QUANTITY values to ensure accurate reporting?
+Would love to discuss these findings in more detail. Let me know if you’d like a deeper dive into the data or if we should pull in other stakeholders to address the gaps.
+
+Thanks,
+[Nagabalareddy]
