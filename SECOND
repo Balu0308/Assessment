@@ -6,6 +6,39 @@ ANNIE'S HOMEGROWN GROCERY - 576 receipts
 DOVE - 558 receipts
 BAREFOOT - 552 receipts
 ORIBE - 504 receipts
+
+SQL QUERY:
+
+WITH AgeFilteredUsers AS (
+    SELECT 
+        ID AS USER_ID,
+        BIRTH_DATE,
+        DATE_PART('year', AGE(NOW(), BIRTH_DATE)) AS age
+    FROM USER_TAKEHOME
+    WHERE BIRTH_DATE IS NOT NULL
+),
+UserReceipts AS (
+    SELECT 
+        t.USER_ID,
+        p.BRAND,
+        COUNT(t.RECEIPT_ID) AS receipt_count
+    FROM TRANSACTION_TAKEHOME t
+    JOIN PRODUCTS_TAKEHOME p ON t.BARCODE = p.BARCODE
+    JOIN AgeFilteredUsers u ON t.USER_ID = u.USER_ID
+    WHERE u.age >= 21 AND p.BRAND IS NOT NULL
+    GROUP BY t.USER_ID, p.BRAND
+),
+BrandRanked AS (
+    SELECT 
+        BRAND,
+        SUM(receipt_count) AS total_receipts
+    FROM UserReceipts
+    GROUP BY BRAND
+    ORDER BY total_receipts DESC
+    LIMIT 5
+)
+SELECT * FROM BrandRanked;
+
 2.What are the top 5 brands by sales among users that have had their account for at least six months?
 Top 5 Brands by Sales Among Users With an Account for at Least Six Months:
 COCA-COLA - $2,592.10
@@ -13,5 +46,56 @@ ANNIE'S HOMEGROWN GROCERY - $2,383.92
 DOVE - $2,327.47
 BAREFOOT - $2,284.59
 ORIBE - $2,085.93
+
+SQL QUERY:
+WITH EligibleUsers AS (
+    SELECT 
+        ID AS USER_ID,
+        CREATED_DATE
+    FROM USER_TAKEHOME
+    WHERE CREATED_DATE <= NOW() - INTERVAL '6 months'
+),
+UserSales AS (
+    SELECT 
+        t.USER_ID,
+        p.BRAND,
+        SUM(CAST(t.FINAL_SALE AS DECIMAL(10,2))) AS total_sales
+    FROM TRANSACTION_TAKEHOME t
+    JOIN PRODUCTS_TAKEHOME p ON t.BARCODE = p.BARCODE
+    JOIN EligibleUsers u ON t.USER_ID = u.USER_ID
+    WHERE t.FINAL_SALE IS NOT NULL AND t.FINAL_SALE != '' AND p.BRAND IS NOT NULL
+    GROUP BY t.USER_ID, p.BRAND
+),
+BrandRanked AS (
+    SELECT 
+        BRAND,
+        SUM(total_sales) AS total_sales_amount
+    FROM UserSales
+    GROUP BY BRAND
+    ORDER BY total_sales_amount DESC
+    LIMIT 5
+)
+SELECT * FROM BrandRanked;
+
 Open-Ended Questions:
-1.Who are Fetch’s power users?
+3.Which is the leading brand in the Dips & Salsa category?
+The leading brand in the Dips & Salsa category is TOSTITOS, with the highest total sales.
+
+SQL QUERY:
+WITH CategorySales AS (
+    SELECT 
+        p.BRAND,
+        SUM(CAST(t.FINAL_SALE AS DECIMAL(10,2))) AS total_sales
+    FROM TRANSACTION_TAKEHOME t
+    JOIN PRODUCTS_TAKEHOME p ON t.BARCODE = p.BARCODE
+    WHERE p.CATEGORY_2 = 'Dips & Salsa'
+        AND t.FINAL_SALE IS NOT NULL
+        AND t.FINAL_SALE != ''
+        AND p.BRAND IS NOT NULL
+    GROUP BY p.BRAND
+)
+SELECT BRAND, total_sales
+FROM CategorySales
+ORDER BY total_sales DESC
+LIMIT 1;
+
